@@ -174,7 +174,13 @@ const ChatRoom: React.FC<Props> = ({
     if (ready || messageBoxRef.current) {
       setTimeout(scrollMessageBoxToBottom, 200);
     }
-  }, [scrollMessageBoxToBottom, currentRoomMessages, ready, messageBoxRef]);
+  }, [
+    scrollMessageBoxToBottom,
+    currentRoomMessages,
+    ready,
+    messageBoxRef,
+    pendingMessages,
+  ]);
 
   const goToHome = () => {
     router.push("/");

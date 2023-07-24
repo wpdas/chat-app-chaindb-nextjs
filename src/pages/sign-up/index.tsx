@@ -131,16 +131,22 @@ const SignUp = () => {
             type="button"
             onClick={signInHandler}
           >
-            Submit
+            Sign up
           </Button>
 
           {error && (
-            <Text fontSize={14} color="red.600" maxW="sm">
+            <Text fontSize={14} color="red.600" maxW="sm" textAlign="center">
               {error}
             </Text>
           )}
 
-          <Text fontSize={14} mt={2} color="gray.700" maxW="sm">
+          <Text
+            fontSize={14}
+            mt={2}
+            color="gray.700"
+            maxW="sm"
+            textAlign="center"
+          >
             Already have an account?{" "}
             <Link as={NextLink} href="/sign-in" color="teal.500">
               Sign In.

@@ -17,11 +17,15 @@ import useAuth from "@app/hooks/useAuth";
 import { useRouter } from "next/router";
 import usernameFormatter from "@app/utils/usernameFormatter";
 
+const GUEST_USERNAME = `guest.${Math.round(Math.random() * 99999)}`;
+const GUEST_PASSWORD = "guest-1234";
+
 const SignIn = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, isLoading] = useState(false);
+  const [loadingGuest, isLoadingGuest] = useState(false);
   const auth = useAuth();
   const router = useRouter();
   const [ready, isReady] = useState(false);
@@ -34,6 +38,7 @@ const SignIn = () => {
     }
   }, [auth, router]);
 
+  // Sign in as signed user
   const signInHandler = useCallback(async () => {
     setError("");
 
@@ -58,6 +63,29 @@ const SignIn = () => {
       isLoading(false);
     }
   }, [username, password, auth, router]);
+
+  // Sign in as guest
+  const signInGuestHandler = useCallback(async () => {
+    setError("");
+
+    isLoadingGuest(true);
+    const nameTaken = await auth.signup(GUEST_USERNAME, GUEST_PASSWORD);
+
+    if (nameTaken) {
+      const error = await auth.signin(GUEST_USERNAME, GUEST_PASSWORD);
+      setError(error);
+
+      if (!error) {
+        // Go to chat page
+        router.push("/");
+      } else {
+        isLoadingGuest(false);
+      }
+    } else {
+      // Go to chat page
+      router.push("/");
+    }
+  }, [auth, router]);
 
   if (!ready) {
     return (
@@ -115,17 +143,36 @@ const SignIn = () => {
             type="button"
             onClick={signInHandler}
           >
-            Submit
+            Sign in
           </Button>
 
           {error && (
-            <Text fontSize={14} color="red.600" maxW="sm">
+            <Text fontSize={14} color="red.600" maxW="sm" textAlign="center">
               {error}
             </Text>
           )}
 
-          <Text fontSize={14} mt={2} color="gray.700" maxW="sm">
-            Not have an account yet?{" "}
+          <Text fontSize={14} maxW="sm" textAlign="center">
+            Or
+          </Text>
+
+          <Button
+            colorScheme="teal"
+            isLoading={loadingGuest}
+            type="button"
+            onClick={signInGuestHandler}
+          >
+            Sign in as guest
+          </Button>
+
+          <Text
+            fontSize={14}
+            mt={2}
+            color="gray.700"
+            maxW="sm"
+            textAlign="center"
+          >
+            Don&apos;t have an account yet?{" "}
             <Link as={NextLink} href="/sign-up" color="teal.500">
               Sign Up.
             </Link>{" "}

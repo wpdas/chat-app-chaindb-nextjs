@@ -8,7 +8,7 @@ export interface Props {
 
 const newUser = async (payload: Props) => {
   const res = await api().post<BasicResponse<SignedUserAccount>>(
-    "api/user/new",
+    `${window.location.origin}/api/user/new`,
     payload
   );
   return res.data;

@@ -9,10 +9,13 @@ export interface RegisterNewRoomPayload {
 const registerNewRoom = async (payload: RegisterNewRoomPayload) => {
   let roomId = roomNameFormater(payload.roomName);
 
-  const rooms = await api().post<Room[]>("api/room/new", {
-    roomId,
-    roomName: payload.roomName,
-  });
+  const rooms = await api().post<Room[]>(
+    `${window.location.origin}/api/room/new`,
+    {
+      roomId,
+      roomName: payload.roomName,
+    }
+  );
   return rooms.data;
 };
 export default registerNewRoom;

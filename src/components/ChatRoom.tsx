@@ -95,11 +95,11 @@ const ChatRoom: React.FC<Props> = ({
         if (checkLength) {
           if (messages.length !== currentRoomMessages.length) {
             setCurrentRoomMessages(messages);
+            scrollMessageBoxToBottom();
           }
         } else {
           setCurrentRoomMessages(messages);
         }
-        scrollMessageBoxToBottom();
         setReady(true);
         setPendingMessages([]);
       });

@@ -2,6 +2,7 @@ import ChatRoom from "@app/components/ChatRoom";
 import Container from "@app/components/Container";
 import { roomsHistoryTable } from "@app/database";
 import { Room } from "@app/database/history-tables/Rooms";
+import getRoomsList from "@app/services/getRoomsList";
 import { Box, Spinner } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -15,8 +16,8 @@ const MobileChatRoom = () => {
   useEffect(() => {
     const fetch = async () => {
       if (roomId) {
-        const rooms = await roomsHistoryTable();
-        const room = rooms.table.rooms.find((room) => room.roomId === roomId);
+        const rooms = await getRoomsList();
+        const room = rooms.find((room) => room.roomId === roomId);
         if (!room) {
           router.push("/");
         } else {

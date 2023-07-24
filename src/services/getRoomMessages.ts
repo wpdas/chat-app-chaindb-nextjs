@@ -8,7 +8,7 @@ export interface GetRoomDataPayload {
 
 const getRoomMessages = async (payload: GetRoomDataPayload) => {
   const messages = await api().get<MessagesTable[]>(
-    `api/message/${payload.roomId}`
+    `${window.location.origin}/api/message/${payload.roomId}`
   );
   return messages.data;
 };

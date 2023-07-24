@@ -8,6 +8,6 @@ interface SendMessagePayload {
 
 const sendMessage = async (payload: SendMessagePayload) => {
   // Register new message history
-  await api().post("api/message/new", payload);
+  await api().post(`${window.location.origin}/api/message/new`, payload);
 };
 export default sendMessage;

@@ -146,8 +146,9 @@ const ChatRoom: React.FC<Props> = ({
 
       scrollMessageBoxToBottom();
 
-      await sendMessage({
+      sendMessage({
         roomId: room.roomId,
+        userId: auth.userId!,
         message: {
           message: messageCopy,
           username: auth.username!,
@@ -155,13 +156,17 @@ const ChatRoom: React.FC<Props> = ({
           b64Image: b64ImageToSend || undefined,
           timestamp: Date.now(),
         },
-      });
+      })
+        .then(() => {
+          clear(); // image data
+          setB64ImageToSend(null);
 
-      clear(); // image data
-      setB64ImageToSend(null);
-
-      // Fetch new messages
-      fetchNewMessages(room.roomId);
+          // Fetch new messages
+          fetchNewMessages(room.roomId);
+        })
+        .catch(() => {
+          throw new Error("Error sending a new message");
+        });
     }
   };
 
@@ -197,6 +202,7 @@ const ChatRoom: React.FC<Props> = ({
 
   return (
     <Box
+      id="rooms-container"
       w="100%"
       h="100%"
       display="flex"

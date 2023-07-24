@@ -3,6 +3,7 @@ import { api } from "./api";
 
 interface SendMessagePayload {
   roomId: string;
+  userId: string;
   message: Message;
 }
 

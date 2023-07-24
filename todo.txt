@@ -9,3 +9,4 @@ para que depois ele de seguimento entrando na sala apos o sign in / sign up
 6 - IMPORTANTE: Remover o "Loading" que ta aparecendo no começo do app. Deve ter algo a ver com
 CacheProvider - DONE
 7 - Usar um metodo de socket para obter as mensagens
+8 - Mensagens devem ser assinadas por um user_id, isso evita mensagens sendo persistida de forma publica. - DONE

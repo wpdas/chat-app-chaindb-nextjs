@@ -1,5 +1,4 @@
-import { Avatar, Box, Text } from "@chakra-ui/react";
-import normalizeRoomName from "../utils/normalizeRoomName";
+import { Avatar, Box, Button, Text } from "@chakra-ui/react";
 import { Room } from "@app/database/history-tables/Rooms";
 
 type Props = {
@@ -8,15 +7,16 @@ type Props = {
 };
 
 const RoomItem: React.FC<Props> = ({ room, onSelectRoom }) => {
-  // const normalizedName = normalizeRoomName(name);
-
   return (
-    <Box
+    <Button
       cursor="pointer"
       display="flex"
+      justifyContent="start"
       alignItems="center"
       bg="gray.600"
       p={2}
+      height={12}
+      size="md"
       borderRadius={6}
       _hover={{ backgroundColor: "#38b2ac68" }}
       onClick={() => onSelectRoom(room)}
@@ -30,7 +30,7 @@ const RoomItem: React.FC<Props> = ({ room, onSelectRoom }) => {
       <Text color="white" ml={4} as="b">
         {room.roomName}
       </Text>
-    </Box>
+    </Button>
   );
 };
 

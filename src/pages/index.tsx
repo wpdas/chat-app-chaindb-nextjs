@@ -15,7 +15,7 @@ import ChatRoom from "../components/ChatRoom";
 import { Room, defaultRoom } from "@app/database/history-tables/Rooms";
 import { useRouter } from "next/router";
 import useAuth from "@app/hooks/useAuth";
-import { roomsHistoryTable } from "@app/database";
+import getRoomsList from "@app/services/getRoomsList";
 
 const Home = () => {
   const [isLargerThan700] = useMediaQuery("(min-width: 700px)");
@@ -32,10 +32,8 @@ const Home = () => {
 
   useEffect(() => {
     const fetchRoom = async () => {
-      const rooms = await roomsHistoryTable();
-      const room = rooms.table.rooms.find(
-        (room) => room.roomId === intent_roomId
-      );
+      const rooms = await getRoomsList();
+      const room = rooms.find((room) => room.roomId === intent_roomId);
 
       if (room) {
         setRoom(room);

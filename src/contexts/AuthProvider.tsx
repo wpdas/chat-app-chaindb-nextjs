@@ -4,10 +4,21 @@ import { createContext, useCallback, useState } from "react";
 type AuthContextProps = {
   userId?: string;
   username?: string;
-  error: string;
-  login: (username: string, password: string) => Promise<void>;
+  /**
+   * Assinar
+   * @param username
+   * @param password
+   * @returns
+   */
+  signup: (username: string, password: string) => Promise<string>;
+  /**
+   * Entrar
+   * @param username
+   * @param password
+   * @returns
+   */
+  signin: (username: string, password: string) => Promise<string>;
   logout: () => void;
-  cleanError: () => void;
   /**
    * Used to check the previous logged in user
    * @param userId
@@ -17,15 +28,14 @@ type AuthContextProps = {
 };
 
 const defaultValue: AuthContextProps = {
-  error: "",
-  login: () => {
-    throw new Error("login must be defined");
+  signup: () => {
+    throw new Error("signup must be defined");
+  },
+  signin: () => {
+    throw new Error("signin must be defined");
   },
   logout: () => {
     throw new Error("logout must be defined");
-  },
-  cleanError: () => {
-    throw new Error("cleanError must be defined");
   },
   checkUser: () => {
     throw new Error("checkUser must be defined");
@@ -34,32 +44,48 @@ const defaultValue: AuthContextProps = {
 
 export const AuthContext = createContext(defaultValue);
 
+const isClient = () => typeof window !== "undefined" && window.localStorage;
+
 const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const userId = localStorage.getItem("userId") || undefined;
-  const username = localStorage.getItem("username") || undefined;
+  const userId = isClient()
+    ? localStorage.getItem("userId") || undefined
+    : undefined;
+  const username = isClient()
+    ? localStorage.getItem("username") || undefined
+    : undefined;
   const [error, setError] = useState("");
 
-  const login = useCallback(async (username: string, password: string) => {
+  // Assinar
+  const signup = useCallback(async (username: string, password: string) => {
     const res = await database.create_user_account(username, password);
     if (!res.success) {
-      setError(res.error_msg);
-      return;
+      return res.error_msg;
     }
 
     // If succeed, save user info
     localStorage.setItem("userId", res.data!.id);
     localStorage.setItem("username", username);
+    return "";
+  }, []);
+
+  // Entrar
+  const signin = useCallback(async (username: string, password: string) => {
+    const res = await database.get_user_account(username, password);
+    if (!res.success) {
+      return res.error_msg;
+    }
+
+    // If succeed, save user info
+    localStorage.setItem("userId", res.data!.id);
+    localStorage.setItem("username", username);
+    return "";
   }, []);
 
   const logout = useCallback(() => {
     localStorage.clear();
     // TODO: Go to Home
-  }, []);
-
-  const cleanError = useCallback(() => {
-    setError("");
   }, []);
 
   /**
@@ -75,7 +101,14 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <AuthContext.Provider
-      value={{ userId, username, error, login, logout, cleanError, checkUser }}
+      value={{
+        userId,
+        username,
+        signin,
+        signup,
+        logout,
+        checkUser,
+      }}
     >
       {children}
     </AuthContext.Provider>

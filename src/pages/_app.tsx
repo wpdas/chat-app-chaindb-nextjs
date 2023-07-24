@@ -1,5 +1,4 @@
-import RoomsProvider from "@app/contexts/RoomsProvider";
-import { ChakraProvider } from "@chakra-ui/react";
+import { Providers } from "./providers";
 
 const MyApp = ({
   Component,
@@ -9,11 +8,9 @@ const MyApp = ({
   pageProps: any;
 }) => {
   return (
-    <ChakraProvider>
-      <RoomsProvider>
-        <Component {...pageProps} />
-      </RoomsProvider>
-    </ChakraProvider>
+    <Providers>
+      <Component {...pageProps} />
+    </Providers>
   );
 };
 

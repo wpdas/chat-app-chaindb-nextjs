@@ -9,6 +9,7 @@ import MessageParagraph from "./MessageParagraph";
 import truncate from "../utils/truncate";
 import useAuth from "@app/hooks/useAuth";
 import { MessagesTable } from "@app/database/history-tables/Messages";
+import normalizeUsername from "@app/utils/normalizeUsername";
 
 type Props = {
   message: MessagesTable;
@@ -86,7 +87,7 @@ const Message: React.FC<Props> = ({ message }) => {
             fontSize="sm"
             color="#515151"
           >
-            {truncate(message.username!, 25)}
+            {truncate(normalizeUsername(message.username!), 25)}
           </Text>
           {message.timestamp && (
             <Text ml={1}>- {timeAgo.format(message.timestamp)}</Text>
@@ -149,7 +150,7 @@ const Message: React.FC<Props> = ({ message }) => {
           <Text mr={4} />
         )}
         <Text textTransform="capitalize" as="b" fontSize="sm" color="#515151">
-          {truncate(message.username!, 25)}
+          {truncate(normalizeUsername(message.username!), 25)}
         </Text>
       </Box>
       <MessageParagraph

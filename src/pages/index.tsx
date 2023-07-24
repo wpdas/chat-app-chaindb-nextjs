@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   Alert,
   AlertIcon,
@@ -14,6 +14,7 @@ import RecentRooms from "../components/RecentRooms";
 import ChatRoom from "../components/ChatRoom";
 import { Room, defaultRoom } from "@app/database/history-tables/Rooms";
 import { useRouter } from "next/router";
+import useAuth from "@app/hooks/useAuth";
 
 const Home = () => {
   const [isLargerThan700] = useMediaQuery("(min-width: 700px)");
@@ -25,6 +26,13 @@ const Home = () => {
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const router = useRouter();
+  const auth = useAuth();
+
+  useEffect(() => {
+    if (!auth.userId) {
+      router.push("/sign-in");
+    }
+  }, [auth, router]);
 
   const onErrorCreatingNewRoom = (error: string) => {
     setError(error);
@@ -37,15 +45,13 @@ const Home = () => {
   const onSelectRoomHandler = useCallback(
     (selectedRoom: Room) => {
       setRoom(selectedRoom);
-      console.log("ROOM:", selectedRoom);
 
       // Go to Mobile Chat Room
       if (!isLargerThan700) {
-        // navigation.push("MobileChatRoom", { roomId: selectedRoomId });
-        // router.push('/')
+        router.push(`/m-chat/${selectedRoom.roomId}`);
       }
     },
-    [isLargerThan700]
+    [isLargerThan700, router]
   );
 
   const onCompleteCreateRoom = useCallback((room: Room) => {
@@ -59,6 +65,24 @@ const Home = () => {
       setSuccessMessage("");
     }, 4000);
   }, []);
+
+  if (!auth.userId) {
+    return (
+      <Container>
+        <Box w="100%" display="flex">
+          <Spinner
+            margin="auto"
+            thickness="4px"
+            speed="0.65s"
+            emptyColor="gray.200"
+            color="teal.500"
+            size="xl"
+            mt="22%"
+          />
+        </Box>
+      </Container>
+    );
+  }
 
   return (
     <Container>

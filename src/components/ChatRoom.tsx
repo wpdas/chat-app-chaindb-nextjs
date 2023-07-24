@@ -152,8 +152,7 @@ const ChatRoom: React.FC<Props> = ({
       await sendMessage({
         roomId: room.roomId,
         message: messageCopy,
-        // username: auth.username!,
-        username: "wenderson.pires",
+        username: auth.username!,
         // userAvatarImage: auth.user?.profileInfo?.image?.ipfs_cid!,
         b64Image: b64ImageToSend || undefined,
         timestamp: Date.now(),
@@ -192,7 +191,7 @@ const ChatRoom: React.FC<Props> = ({
   }, [room, scrollMessageBoxToBottom]);
 
   const goToHome = () => {
-    router.push("/home");
+    router.push("/");
   };
 
   // Image upload
@@ -215,7 +214,13 @@ const ChatRoom: React.FC<Props> = ({
   };
 
   return (
-    <Box w="100%" display="flex" flexDirection="column" alignItems="center">
+    <Box
+      w="100%"
+      h="100%"
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+    >
       <Box w="100%" h="100%">
         <Box
           p={4}
@@ -235,23 +240,23 @@ const ChatRoom: React.FC<Props> = ({
             Room: {room.roomName}
           </Heading>
           <Box>
-            {mainChatURL && (
-              <Tooltip label="share room" placement="bottom">
-                <IconButton
-                  aria-label="Share room"
-                  colorScheme="gray.900"
-                  bg="#70F2A4"
-                  h="1.75rem"
-                  size="xs"
-                  fontSize="18px"
-                  width="32px"
-                  height="32px"
-                  borderRadius={999}
-                  onClick={onShareClick}
-                  icon={<Icon as={RiShareFill} color="black" />}
-                />
-              </Tooltip>
-            )}
+            {/* {mainChatURL && ( */}
+            <Tooltip label="share room" placement="bottom">
+              <IconButton
+                aria-label="Share room"
+                colorScheme="gray.900"
+                bg="#70F2A4"
+                h="1.75rem"
+                size="xs"
+                fontSize="18px"
+                width="32px"
+                height="32px"
+                borderRadius={999}
+                onClick={onShareClick}
+                icon={<Icon as={RiShareFill} color="black" />}
+              />
+            </Tooltip>
+            {/* )} */}
 
             {showLeaveButton && (
               <Button
@@ -276,7 +281,7 @@ const ChatRoom: React.FC<Props> = ({
               bg="gray.50"
               p={4}
               overflowX="auto"
-              height="calc(100% - 130px)"
+              height="calc(100% - 138px)"
               background="#F7F8FA"
             >
               {currentRoomMessages.length === 0 && (

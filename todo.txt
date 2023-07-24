@@ -1,0 +1,4 @@
+1 - Colocar os dados de acesso do banco de dados em ENV file
+2 - Fazer as chamadas do banco usando servidor, não client (NEXTJS)
+3 - Share room -> Usar aquele recurso que usamos no Facemash, um componente pronto
+que mostra opções de compartilhamento

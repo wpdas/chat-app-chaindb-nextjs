@@ -1,5 +1,6 @@
 "use client";
 
+import AuthProvider from "@app/contexts/AuthProvider";
 import RoomsProvider from "@app/contexts/RoomsProvider";
 import { CacheProvider } from "@chakra-ui/next-js";
 import { ChakraProvider } from "@chakra-ui/react";
@@ -9,9 +10,11 @@ import { ChakraProvider } from "@chakra-ui/react";
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <CacheProvider>
-      <RoomsProvider>
-        <ChakraProvider>{children}</ChakraProvider>
-      </RoomsProvider>
+      <AuthProvider>
+        <RoomsProvider>
+          <ChakraProvider>{children}</ChakraProvider>
+        </RoomsProvider>
+      </AuthProvider>
     </CacheProvider>
   );
 }

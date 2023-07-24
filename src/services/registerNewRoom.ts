@@ -1,5 +1,6 @@
-import { roomsHistoryTable } from "@app/database";
 import roomNameFormater from "@app/utils/roomNameFormater";
+import { api } from "./api";
+import { Room } from "@app/database/history-tables/Rooms";
 
 export interface RegisterNewRoomPayload {
   roomName: string;
@@ -8,13 +9,10 @@ export interface RegisterNewRoomPayload {
 const registerNewRoom = async (payload: RegisterNewRoomPayload) => {
   let roomId = roomNameFormater(payload.roomName);
 
-  const rooms = await roomsHistoryTable();
-  rooms.table.rooms = [
-    ...rooms.table.rooms,
-    { roomId, roomName: payload.roomName },
-  ];
-
-  await rooms.persist();
-  return rooms.table.rooms;
+  const rooms = await api().post<Room[]>("api/room/new", {
+    roomId,
+    roomName: payload.roomName,
+  });
+  return rooms.data;
 };
 export default registerNewRoom;

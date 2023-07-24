@@ -1,6 +1,8 @@
-import { database } from "@app/database";
+import getUser from "@app/services/getUser";
+import getUserById from "@app/services/getUserById";
+import newUser from "@app/services/newUser";
 import { useRouter } from "next/router";
-import { createContext, useCallback, useState } from "react";
+import { createContext, useCallback } from "react";
 
 type AuthContextProps = {
   userId?: string;
@@ -61,7 +63,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Assinar
   const signup = useCallback(async (username: string, password: string) => {
-    const res = await database.create_user_account(username, password);
+    const res = await newUser({ username, password });
     if (!res.success) {
       return res.error_msg;
     }
@@ -74,7 +76,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Entrar
   const signin = useCallback(async (username: string, password: string) => {
-    const res = await database.get_user_account(username, password);
+    const res = await getUser({ username, password });
     if (!res.success) {
       return res.error_msg;
     }
@@ -97,7 +99,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     if (!userId) {
       return false;
     }
-    const res = await database.get_user_account_by_id(userId);
+    const res = await getUserById({ userId });
     return res.success;
   }, [userId]);
 

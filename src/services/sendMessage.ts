@@ -1,4 +1,4 @@
-import { messagesHistoryTable } from "@app/database";
+import { api } from "./api";
 
 interface SendMessagePayload {
   roomId: string;
@@ -11,13 +11,14 @@ interface SendMessagePayload {
 
 const sendMessage = async (payload: SendMessagePayload) => {
   // Register new message history
-  const message = await messagesHistoryTable(payload.roomId);
-  message.table = {
-    username: payload.username,
-    message: payload.message,
-    b64Image: payload.b64Image,
-    timestamp: payload.timestamp,
-  };
-  await message.persist();
+  await api().post("api/message/new", {
+    roomId: payload.roomId,
+    message: {
+      username: payload.username,
+      message: payload.message,
+      b64Image: payload.b64Image,
+      timestamp: payload.timestamp,
+    },
+  });
 };
 export default sendMessage;

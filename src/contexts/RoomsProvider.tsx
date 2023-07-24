@@ -1,7 +1,7 @@
 import { createContext, useCallback, useEffect, useState } from "react";
 import getRoomsList from "../services/getRoomsList";
 import { Room } from "@app/database/history-tables/Rooms";
-import { initialDatabaseMigration } from "@app/database";
+import runInitalMigration from "@app/services/runInitialMigration";
 
 type RoomsContextProps = {
   roomsList: Room[];
@@ -28,7 +28,7 @@ const RoomsProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Initial Migration
   useEffect(() => {
-    initialDatabaseMigration().then(() => {
+    runInitalMigration().then(() => {
       setDbIsReady(true);
     });
   }, []);

@@ -1,5 +1,12 @@
 // Used to create a registry of new messages
 
+export type Message = {
+  username: string;
+  message: string;
+  b64Image?: string;
+  timestamp: number;
+};
+
 export class MessagesTable {
   public username?: string;
   public message?: string;

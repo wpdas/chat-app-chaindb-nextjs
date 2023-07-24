@@ -1,7 +1,8 @@
-1 - Colocar os dados de acesso do banco de dados em ENV file
+1 - Colocar os dados de acesso do banco de dados em ENV file - DONE
 2 - Fazer as chamadas do banco usando servidor, não client (NEXTJS)
 3 - Share room -> Usar aquele recurso que usamos no Facemash, um componente pronto - DONE
 que mostra opções de compartilhamento - DONE
 3.1 - Quando um usuário vir sem estar logado, deve guardar a referencia da sala que ele ia entrar
 para que depois ele de seguimento entrando na sala apos o sign in / sign up
 4 - Fazer o deploy usando Vercel
+5 - Colocar Bearer Token nas requisicoes

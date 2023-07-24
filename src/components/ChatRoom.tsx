@@ -25,7 +25,10 @@ import resizeImage from "../utils/resizeImage";
 import MessageImage from "./MessageImage";
 // import setClipboardText from "../services/setClipboardText";
 import useAuth from "@app/hooks/useAuth";
-import { MessagesTable } from "@app/database/history-tables/Messages";
+import {
+  Message as MessageType,
+  MessagesTable,
+} from "@app/database/history-tables/Messages";
 import { Room, defaultRoom } from "@app/database/history-tables/Rooms";
 
 type Props = {
@@ -44,7 +47,7 @@ const ChatRoom: React.FC<Props> = ({
   const [currentRoomMessages, setCurrentRoomMessages] = useState<
     MessagesTable[]
   >([]);
-  // const [pendingMessages, setPendingMessages] = useState<RoomMessage[]>([]);
+  const [pendingMessages, setPendingMessages] = useState<MessageType[]>([]);
   const [message, setMessage] = useState("");
   const { ready: isRoomsReady, roomsList } = useRoomsList();
   const [ready, setReady] = useState(false);
@@ -64,7 +67,7 @@ const ChatRoom: React.FC<Props> = ({
   // useEffect(() => {
   //   if (isRoomsReady) {
   //     let roomExists = roomsList.find(
-  //       (room) => room.roomId === currentRoom.roomId
+  //       (room) => room.roomId === room.roomId
   //     );
   //     if (!roomExists) {
   //       setCurrentRoom(defaultRoom);
@@ -92,29 +95,23 @@ const ChatRoom: React.FC<Props> = ({
         if (checkLength) {
           if (messages.length !== currentRoomMessages.length) {
             setCurrentRoomMessages(messages);
-            scrollMessageBoxToBottom();
           }
         } else {
           setCurrentRoomMessages(messages);
-          scrollMessageBoxToBottom();
         }
+        scrollMessageBoxToBottom();
+        setReady(true);
+        setPendingMessages([]);
       });
     },
-    [scrollMessageBoxToBottom, currentRoomMessages]
+    [currentRoomMessages, scrollMessageBoxToBottom]
   );
 
   useEffect(() => {
     setReady(false);
-    fetchNewMessages(room.roomId, false);
+    fetchNewMessages(room.roomId, false).then(() => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [room]);
-
-  // Load initial messages
-  useEffect(() => {
-    fetchNewMessages(room.roomId).then(() => {
-      setReady(true);
-    });
-  }, [room, scrollMessageBoxToBottom, fetchNewMessages]);
 
   // Listen to messages
   useEffect(() => {
@@ -127,69 +124,52 @@ const ChatRoom: React.FC<Props> = ({
     return () => {
       clearInterval(subscription);
     };
-  }, [room, currentRoomMessages, scrollMessageBoxToBottom, fetchNewMessages]);
+  }, [room, currentRoomMessages, fetchNewMessages]);
 
   // Send message handler
   const sendMessageClick = async () => {
     if (message) {
       const messageCopy = message;
+      setMessage("");
 
       // Populate the pending messages to display in advance
-      // setPendingMessages([
-      //   ...pendingMessages,
-      //   {
-      //     accountId: auth.userId!,
-      //     blockHeight: Math.random() * 999999,
-      //     value: {
-      //       text: messageCopy,
-      //       userName: auth.username!,
-      //       // userAvatarImage: auth.user?.profileInfo?.image?.ipfs_cid!,
-      //       b64Image: b64ImageToSend || undefined,
-      //       timestamp: Date.now(),
-      //     },
-      //   },
-      // ]);
+      setPendingMessages([
+        ...pendingMessages,
+        {
+          message: messageCopy,
+          username: auth.username!,
+          // userAvatarImage: auth.user?.profileInfo?.image?.ipfs_cid!,
+          b64Image: b64ImageToSend || undefined,
+          timestamp: Date.now(),
+        },
+      ]);
+
+      scrollMessageBoxToBottom();
 
       await sendMessage({
         roomId: room.roomId,
-        message: messageCopy,
-        username: auth.username!,
-        // userAvatarImage: auth.user?.profileInfo?.image?.ipfs_cid!,
-        b64Image: b64ImageToSend || undefined,
-        timestamp: Date.now(),
+        message: {
+          message: messageCopy,
+          username: auth.username!,
+          // userAvatarImage: auth.user?.profileInfo?.image?.ipfs_cid!,
+          b64Image: b64ImageToSend || undefined,
+          timestamp: Date.now(),
+        },
       });
 
       clear(); // image data
-      setMessage("");
       setB64ImageToSend(null);
-      scrollMessageBoxToBottom();
 
       // Fetch new messages
       fetchNewMessages(room.roomId);
     }
   };
 
-  // Truncated room name
-  // console.log("ROOM NAME?", currentRoom.roomId);
-  // const roomName = currentRoomId
-  //   ? truncate(currentRoomId.replaceAll("-", " "), isLargerThan388 ? 25 : 10)
-  //   : "";
-
-  // Scroll message box to the bottom as soon as the box is rendered
   useEffect(() => {
-    if (messageBoxRef.current) {
-      scrollMessageBoxToBottom();
+    if (ready || messageBoxRef.current) {
+      setTimeout(scrollMessageBoxToBottom, 200);
     }
-  }, [messageBoxRef, scrollMessageBoxToBottom]);
-
-  useEffect(() => {
-    scrollMessageBoxToBottom();
-  }, [scrollMessageBoxToBottom]);
-
-  // Force go to bottom after some images are loaded
-  useEffect(() => {
-    setTimeout(scrollMessageBoxToBottom, 2200);
-  }, [room, scrollMessageBoxToBottom]);
+  }, [scrollMessageBoxToBottom, currentRoomMessages, ready, messageBoxRef]);
 
   const goToHome = () => {
     router.push("/");
@@ -207,11 +187,6 @@ const ChatRoom: React.FC<Props> = ({
       );
     }
   }, [filesContent]);
-
-  const onShareClick = () => {
-    // TODO: Clipboard to share room
-    // setClipboardText({ text: `${mainChatURL}/?room=${currentRoomId}` });
-  };
 
   const onDeleteImageToSend = () => {
     setB64ImageToSend(null);
@@ -250,7 +225,6 @@ const ChatRoom: React.FC<Props> = ({
             {/* {mainChatURL && ( */}
             {/* <Tooltip label="share room" placement="bottom"> */}
             <RWebShare
-              onClick={onShareClick}
               data={{
                 title: "Chat Rooms App",
                 text: `Come and join my chat room!`,
@@ -267,7 +241,6 @@ const ChatRoom: React.FC<Props> = ({
                 width="32px"
                 height="32px"
                 borderRadius={999}
-                // onClick={onShareClick}
                 icon={<Icon as={RiShareFill} color="black" />}
               />
             </RWebShare>
@@ -329,9 +302,12 @@ const ChatRoom: React.FC<Props> = ({
                 />
               ))}
 
-              {/* {pendingMessages.map((message) => (
-                <Message key={message.blockHeight} message={message} />
-              ))} */}
+              {pendingMessages.map((message) => (
+                <Message
+                  key={message.username! + message.timestamp}
+                  message={message}
+                />
+              ))}
             </Box>
 
             {/* Input */}

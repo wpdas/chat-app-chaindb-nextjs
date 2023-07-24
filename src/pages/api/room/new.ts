@@ -13,6 +13,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     ...rooms.table.rooms,
     { roomId: payload.roomId, roomName: payload.roomName },
   ];
+  await rooms.persist();
 
   res.status(200).json(rooms.table.rooms);
 };

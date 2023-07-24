@@ -18,7 +18,6 @@ import useAuth from "@app/hooks/useAuth";
 import { roomsHistoryTable } from "@app/database";
 
 const Home = () => {
-  console.log(process.env.NEXT_PUBLIC_DB_HOST);
   const [isLargerThan700] = useMediaQuery("(min-width: 700px)");
   // const { room } = useTypedInitialPayload();
   // const [roomId, setRoomId] = useState(room || "near-social-community");

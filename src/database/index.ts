@@ -2,10 +2,10 @@ import { connect } from "chain-db-ts";
 import { RoomsTable } from "./history-tables/Rooms";
 import { MessagesTable } from "./history-tables/Messages";
 
-const dbServer = process.env.NEXT_PUBLIC_DB_HOST as string;
-const dbName = process.env.NEXT_PUBLIC_DB_NAME as string;
-const dbUser = process.env.NEXT_PUBLIC_DB_USER as string;
-const dbPass = process.env.NEXT_PUBLIC_DB_PASS as string;
+const dbServer = process.env.DB_HOST as string;
+const dbName = process.env.DB_NAME as string;
+const dbUser = process.env.DB_USER as string;
+const dbPass = process.env.DB_PASS as string;
 
 export const database = connect(dbServer, dbName, dbUser, dbPass);
 

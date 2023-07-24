@@ -7,11 +7,12 @@ import {
   Stack,
   Text,
   Link,
+  Spinner,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { ChatIcon } from "@chakra-ui/icons";
 import Container from "@app/components/Container";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useAuth from "@app/hooks/useAuth";
 import { useRouter } from "next/router";
 import usernameFormatter from "@app/utils/usernameFormatter";
@@ -23,6 +24,15 @@ const SignIn = () => {
   const [loading, isLoading] = useState(false);
   const auth = useAuth();
   const router = useRouter();
+  const [ready, isReady] = useState(false);
+
+  useEffect(() => {
+    if (auth.userId) {
+      router.push("/");
+    } else {
+      isReady(true);
+    }
+  }, [auth, router]);
 
   const signInHandler = useCallback(async () => {
     setError("");
@@ -49,6 +59,24 @@ const SignIn = () => {
     }
   }, [username, password, auth, router]);
 
+  if (!ready) {
+    return (
+      <Container>
+        <Box w="100%" display="flex">
+          <Spinner
+            margin="auto"
+            thickness="4px"
+            speed="0.65s"
+            emptyColor="gray.200"
+            color="teal.500"
+            size="xl"
+            mt="22%"
+          />
+        </Box>
+      </Container>
+    );
+  }
+
   return (
     <Container>
       <Box w="100%" display="flex" flexDirection="column" alignItems="center">
@@ -61,6 +89,7 @@ const SignIn = () => {
           <FormControl isRequired>
             <FormLabel>Username</FormLabel>
             <Input
+              disabled={loading}
               placeholder="user.name"
               value={username}
               onChange={(e) =>
@@ -72,6 +101,7 @@ const SignIn = () => {
           <FormControl isRequired>
             <FormLabel>Password</FormLabel>
             <Input
+              disabled={loading}
               type="password"
               placeholder="password"
               onChange={(e) => setPassword(e.currentTarget.value)}

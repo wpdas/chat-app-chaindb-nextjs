@@ -15,6 +15,7 @@ import ChatRoom from "../components/ChatRoom";
 import { Room, defaultRoom } from "@app/database/history-tables/Rooms";
 import { useRouter } from "next/router";
 import useAuth from "@app/hooks/useAuth";
+import { roomsHistoryTable } from "@app/database";
 
 const Home = () => {
   const [isLargerThan700] = useMediaQuery("(min-width: 700px)");
@@ -26,13 +27,32 @@ const Home = () => {
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const router = useRouter();
+  const intent_roomId = router.query.room_id; // direct enter this room
   const auth = useAuth();
 
   useEffect(() => {
+    const fetchRoom = async () => {
+      const rooms = await roomsHistoryTable();
+      const room = rooms.table.rooms.find(
+        (room) => room.roomId === intent_roomId
+      );
+
+      if (room) {
+        setRoom(room);
+      }
+    };
+
     if (!auth.userId) {
       router.push("/sign-in");
+    } else if (intent_roomId) {
+      // Send user to the pre-selected room
+      if (!isLargerThan700) {
+        router.push(`/m-chat/${intent_roomId}`);
+      } else {
+        fetchRoom();
+      }
     }
-  }, [auth, router]);
+  }, [auth, router, intent_roomId, isLargerThan700]);
 
   const onErrorCreatingNewRoom = (error: string) => {
     setError(error);

@@ -12,6 +12,7 @@ import {
   Tooltip,
   useMediaQuery,
 } from "@chakra-ui/react";
+import { RWebShare } from "react-web-share";
 import { RiSendPlaneFill, RiImageAddFill, RiShareFill } from "react-icons/ri";
 import truncate from "../utils/truncate";
 import Message from "../components/Message";
@@ -50,14 +51,14 @@ const ChatRoom: React.FC<Props> = ({
   const messageBoxRef = useRef<any>();
   const auth = useAuth();
   // TODO: const { mainChatURL } = useTypedInitialPayload();
-  const mainChatURL = null;
+  // const mainChatURL = null;
   const [openFileSelector, { filesContent, clear }] = useFilePicker({
     accept: "image/*",
     multiple: false,
     readAs: "DataURL",
   });
   const [b64ImageToSend, setB64ImageToSend] = useState<string | null>(null);
-  const [isLargerThan388] = useMediaQuery("(min-width: 388px)");
+  const [isLargerThan375] = useMediaQuery("(min-width: 375px)");
 
   // Check if room exists in the list, case not, set the default one
   // useEffect(() => {
@@ -194,6 +195,10 @@ const ChatRoom: React.FC<Props> = ({
     router.push("/");
   };
 
+  const logoutHandler = () => {
+    auth.logout();
+  };
+
   // Image upload
   useEffect(() => {
     if (!!filesContent[0]) {
@@ -212,6 +217,8 @@ const ChatRoom: React.FC<Props> = ({
     setB64ImageToSend(null);
     clear(); // image
   };
+
+  const shareLink = `${window.location.origin}/?room_id=${room.roomId}`;
 
   return (
     <Box
@@ -237,11 +244,19 @@ const ChatRoom: React.FC<Props> = ({
             justifyContent="space-between"
             alignItems="center"
           >
-            Room: {room.roomName}
+            {!isLargerThan375 ? truncate(room.roomName, 10) : room.roomName}
           </Heading>
           <Box>
             {/* {mainChatURL && ( */}
-            <Tooltip label="share room" placement="bottom">
+            {/* <Tooltip label="share room" placement="bottom"> */}
+            <RWebShare
+              onClick={onShareClick}
+              data={{
+                title: "Chat Rooms App",
+                text: `Come and join my chat room!`,
+                url: shareLink,
+              }}
+            >
               <IconButton
                 aria-label="Share room"
                 colorScheme="gray.900"
@@ -252,10 +267,11 @@ const ChatRoom: React.FC<Props> = ({
                 width="32px"
                 height="32px"
                 borderRadius={999}
-                onClick={onShareClick}
+                // onClick={onShareClick}
                 icon={<Icon as={RiShareFill} color="black" />}
               />
-            </Tooltip>
+            </RWebShare>
+            {/* </Tooltip> */}
             {/* )} */}
 
             {showLeaveButton && (
@@ -270,6 +286,17 @@ const ChatRoom: React.FC<Props> = ({
                 Leave
               </Button>
             )}
+
+            <Button
+              ml={2}
+              size="sm"
+              colorScheme="white"
+              bg="gray.300"
+              color="rgb(9, 52, 46)"
+              onClick={logoutHandler}
+            >
+              Logout
+            </Button>
           </Box>
         </Box>
 

@@ -33,7 +33,10 @@ const RecentRooms: React.FC<Props> = ({ onSelectRoom, onClickCreateRoom }) => {
 
   useEffect(() => {
     if (searchText) {
-      const fuse = new Fuse(roomsList, { includeScore: true });
+      const fuse = new Fuse(roomsList, {
+        includeScore: true,
+        keys: ["roomName"],
+      });
       const result = fuse.search(searchText).map((item) => item.item);
       setFilteredRoomsList(result);
     }

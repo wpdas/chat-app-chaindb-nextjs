@@ -1,4 +1,5 @@
 import { database } from "@app/database";
+import { useRouter } from "next/router";
 import { createContext, useCallback, useState } from "react";
 
 type AuthContextProps = {
@@ -55,7 +56,8 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const username = isClient()
     ? localStorage.getItem("username") || undefined
     : undefined;
-  const [error, setError] = useState("");
+
+  const router = useRouter();
 
   // Assinar
   const signup = useCallback(async (username: string, password: string) => {
@@ -85,8 +87,8 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const logout = useCallback(() => {
     localStorage.clear();
-    // TODO: Go to Home
-  }, []);
+    router.replace("/");
+  }, [router]);
 
   /**
    * Check if user exists

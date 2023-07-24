@@ -6,3 +6,5 @@ que mostra opções de compartilhamento - DONE
 para que depois ele de seguimento entrando na sala apos o sign in / sign up
 4 - Fazer o deploy usando Vercel
 5 - Colocar Bearer Token nas requisicoes
+6 - IMPORTANTE: Remover o "Loading" que ta aparecendo no começo do app. Deve ter algo a ver com
+CacheProvider

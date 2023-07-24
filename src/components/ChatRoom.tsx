@@ -14,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { RWebShare } from "react-web-share";
 import { RiSendPlaneFill, RiImageAddFill, RiShareFill } from "react-icons/ri";
+import { CgScrollV } from "react-icons/cg";
 import truncate from "../utils/truncate";
 import Message from "../components/Message";
 import Loading from "../components/Loading";
@@ -62,6 +63,7 @@ const ChatRoom: React.FC<Props> = ({
   });
   const [b64ImageToSend, setB64ImageToSend] = useState<string | null>(null);
   const [isLargerThan375] = useMediaQuery("(min-width: 375px)");
+  const [autoScroll, setAutoScroll] = useState(true);
 
   // Check if room exists in the list, case not, set the default one
   // useEffect(() => {
@@ -78,7 +80,7 @@ const ChatRoom: React.FC<Props> = ({
 
   // Auto scrolling
   const scrollMessageBoxToBottom = useCallback(() => {
-    if (messageBoxRef.current) {
+    if (messageBoxRef.current && autoScroll) {
       const messageBox = messageBoxRef.current;
       messageBox.scrollTo({
         top: messageBox.scrollHeight,
@@ -86,7 +88,7 @@ const ChatRoom: React.FC<Props> = ({
         behavior: "smooth",
       });
     }
-  }, [messageBoxRef]);
+  }, [messageBoxRef, autoScroll]);
 
   const fetchNewMessages = useCallback(
     async (currentRoomId: string, checkLength = true) => {
@@ -389,6 +391,25 @@ const ChatRoom: React.FC<Props> = ({
                   onClick={sendMessageClick}
                   icon={<Icon as={RiSendPlaneFill} color="white" />}
                 />
+
+                <Tooltip
+                  label={`Auto scroll: ${autoScroll ? "enabled" : "disabled"}`}
+                  placement="top"
+                >
+                  <IconButton
+                    aria-label="Auto scroll"
+                    colorScheme="gray.100"
+                    bg={autoScroll ? "#171923" : "#5f5f64"}
+                    h="1.75rem"
+                    size="xs"
+                    fontSize="22px"
+                    width="42px"
+                    height="42px"
+                    borderRadius={999}
+                    onClick={() => setAutoScroll(!autoScroll)}
+                    icon={<Icon as={CgScrollV} color="white" />}
+                  />
+                </Tooltip>
               </Stack>
             </Box>
           </>

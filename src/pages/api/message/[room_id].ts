@@ -9,7 +9,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const messages = await messagesHistoryTable(roomId);
-  const historyMsg = await messages.getHistory(100);
+  const historyMsg = await messages.getHistory(1000);
 
   // Newest messages first
   const sortedMessages = historyMsg.sort(

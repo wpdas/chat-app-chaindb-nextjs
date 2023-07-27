@@ -7,7 +7,7 @@
  * @returns
  */
 
-const resizeImage = (base64: string, maxWidth = 400, maxHeight = 450) => {
+const resizeImage = (base64: string, maxWidth = 500, maxHeight = 550) => {
   return new Promise<string>((resolve) => {
     let img = new Image();
     img.src = base64;
@@ -33,7 +33,7 @@ const resizeImage = (base64: string, maxWidth = 400, maxHeight = 450) => {
       canvas.height = height;
       let ctx = canvas.getContext("2d");
       ctx!.drawImage(img, 0, 0, width, height);
-      resolve(canvas.toDataURL("image/jpeg", 0.6));
+      resolve(canvas.toDataURL("image/jpeg", 0.9));
     };
   });
 };

@@ -7,13 +7,7 @@ const dbName = process.env.DB_NAME as string;
 const dbUser = process.env.DB_USER as string;
 const dbPass = process.env.DB_PASS as string;
 
-// export const database = connect(dbServer, dbName, dbUser, dbPass);
-export const database = connect(
-  "https://gull-dominant-mistakenly.ngrok-free.app",
-  "test",
-  "root",
-  "1234"
-);
+export const database = connect(dbServer, dbName, dbUser, dbPass);
 
 // Rooms History Table
 export const roomsHistoryTable = async () =>

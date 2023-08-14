@@ -19,6 +19,7 @@
     "@types/react-dom": "18.2.7",
     "axios": "^1.4.0",
     "chain-db-ts": "^0.0.2",
+    "cors": "^2.8.5",
     "eslint": "8.45.0",
     "eslint-config-next": "13.4.12",
     "framer-motion": "^10.13.0",
@@ -30,6 +31,8 @@
     "react-icons": "^4.10.1",
     "react-simple-image-viewer": "^1.2.2",
     "react-web-share": "^2.0.2",
+    "socket.io": "^4.7.2",
+    "socket.io-client": "^4.7.2",
     "typescript": "5.1.6",
     "use-file-picker": "^1.7.0"
   }

@@ -22,7 +22,17 @@ const useRoomMessages = (room: Room) => {
   }, [room.roomId]);
 
   const initSocket = async () => {
-    socket = io({ path: "/api/socket", addTrailingSlash: false });
+    await fetch("/api/socket?EIO=4&transport=polling");
+    // socket = io();
+    socket = io({
+      path: "/api/socket",
+      // addTrailingSlash: false,
+    });
+
+    // socket = io({
+    //   path: "/api/socket",
+    //   addTrailingSlash: false,
+    // });
 
     socket.on("connect", () => {
       console.log("connected");

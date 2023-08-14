@@ -4,14 +4,13 @@ import cors from "cors";
 import { MessagePayload } from "@app/types";
 import { database, messagesHistoryTable } from "@app/database";
 
-const corsMiddleware = cors({
-  origin: "*",
-  methods: ["POST", "GET"],
-});
+const corsMiddleware = cors();
 
+// NOTE: Unfortunatelly Vercel doens't support websocket, so, this will work locally
+// but is going to fail when in production:
+// https://vercel.com/guides/do-vercel-serverless-functions-support-websocket-connections
 const handler = async (req: NextApiRequest, res: NextApiResponse | any) => {
   if (res.socket?.server?.io) {
-    console.log("Already running");
     res.end();
     return;
   }
@@ -21,8 +20,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse | any) => {
     path: "/api/socket",
     addTrailingSlash: false,
   } as any);
-
-  // res.socket.server.io = io;
 
   io.on("connection", (socket) => {
     socket.on("new-message", async (payload: MessagePayload) => {
@@ -51,13 +48,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse | any) => {
 
   // Apply the CORS middleware to the request and response
   corsMiddleware(req, res, () => {
-    console.log("AA");
     res.socket.server.io = io;
     res.end();
-    console.log("BBB");
   });
-
-  console.log("CCCC");
 };
 
 export default handler;

@@ -22,7 +22,6 @@ const useRoomMessages = (room: Room) => {
   }, [room.roomId]);
 
   const initSocket = async () => {
-    // await fetch("/api/socket");
     socket = io({ path: "/api/socket", addTrailingSlash: false });
 
     socket.on("connect", () => {

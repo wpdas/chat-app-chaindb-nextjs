@@ -1,6 +1,6 @@
 import roomNameFormater from "@app/utils/roomNameFormater";
 import { api } from "./api";
-import { Room } from "@app/database/history-tables/Rooms";
+import { Room } from "@app/database/tables/Rooms";
 
 export interface RegisterNewRoomPayload {
   roomName: string;

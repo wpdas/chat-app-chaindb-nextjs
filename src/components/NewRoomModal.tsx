@@ -15,7 +15,7 @@ import useRoomsList from "../hooks/useRoomsList";
 import registerNewRoom from "../services/registerNewRoom";
 import roomNameFormater from "../utils/roomNameFormater";
 import getRoomMessages from "../services/getRoomMessages";
-import { Room } from "@app/database/history-tables/Rooms";
+import { Room } from "@app/database/tables/Rooms";
 
 type Props = {
   isOpen: boolean;

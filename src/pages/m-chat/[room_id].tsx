@@ -1,7 +1,7 @@
 import ChatRoom from "@app/components/ChatRoom";
 import Container from "@app/components/Container";
 import { roomsHistoryTable } from "@app/database";
-import { Room } from "@app/database/history-tables/Rooms";
+import { Room } from "@app/database/tables/Rooms";
 import getRoomsList from "@app/services/getRoomsList";
 import { Box, Spinner } from "@chakra-ui/react";
 import { useRouter } from "next/router";

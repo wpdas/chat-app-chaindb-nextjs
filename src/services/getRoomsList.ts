@@ -1,4 +1,4 @@
-import { Room } from "@app/database/history-tables/Rooms";
+import { Room } from "@app/database/tables/Rooms";
 import { api } from "./api";
 
 const getRoomsList = async () => {

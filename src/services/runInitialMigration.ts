@@ -1,4 +1,4 @@
-import { defaultRoom } from "@app/database/history-tables/Rooms";
+import { defaultRoom } from "@app/database/tables/Rooms";
 import getRoomsList from "./getRoomsList";
 import registerNewRoom from "./registerNewRoom";
 

@@ -8,11 +8,11 @@ import isImageUrl from "../utils/isImageUrl";
 import MessageParagraph from "./MessageParagraph";
 import truncate from "../utils/truncate";
 import useAuth from "@app/hooks/useAuth";
-import { MessagesTable } from "@app/database/history-tables/Messages";
+import { Message as MessageType } from "@app/database/tables/Messages";
 import normalizeUsername from "@app/utils/normalizeUsername";
 
 type Props = {
-  message: MessagesTable;
+  message: MessageType;
   timestamp?: number;
 };
 

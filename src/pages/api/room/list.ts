@@ -1,4 +1,4 @@
-import { roomsHistoryTable } from "@app/database";
+import { getRoomsTable } from "@app/database";
 import { NextApiRequest, NextApiResponse } from "next";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -6,8 +6,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(404).send("");
   }
 
-  const rooms = await roomsHistoryTable();
-  res.status(200).json(rooms.table.rooms);
+  const roomsTable = await getRoomsTable();
+  res.status(200).json(roomsTable.table.rooms || []);
 };
 
 export default handler;

@@ -1,5 +1,5 @@
-import { database, messagesHistoryTable } from "@app/database";
-import { Message } from "@app/database/history-tables/Messages";
+import { getMessagesTable, getUserIdsTable } from "@app/database";
+import { Message } from "@app/database/tables/Messages";
 import { NextApiRequest, NextApiResponse } from "next";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -14,19 +14,23 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   };
 
   // Check user
-  const checkUser = await database.get_user_account_by_id(payload.userId);
-  if (!checkUser.success) {
+  const userIdsTable = await getUserIdsTable();
+  const [userTableInfo] = await userIdsTable.findWhere(
+    { id: payload.userId },
+    1
+  );
+  if (!userTableInfo) {
     return res.status(404).send("");
   }
 
-  const message = await messagesHistoryTable(payload.roomId);
-  message.table = {
+  const messageTable = await getMessagesTable(payload.roomId);
+  messageTable.table = {
     username: payload.message.username,
     message: payload.message.message,
     b64Image: payload.message.b64Image,
     timestamp: payload.message.timestamp,
   };
-  await message.persist();
+  await messageTable.persist();
 
   res.status(200).json({ status: "ok" });
 };

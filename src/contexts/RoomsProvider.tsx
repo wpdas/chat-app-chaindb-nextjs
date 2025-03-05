@@ -1,6 +1,6 @@
 import { createContext, useCallback, useEffect, useState } from "react";
 import getRoomsList from "../services/getRoomsList";
-import { Room } from "@app/database/history-tables/Rooms";
+import { Room } from "@app/database/tables/Rooms";
 import runInitalMigration from "@app/services/runInitialMigration";
 
 type RoomsContextProps = {

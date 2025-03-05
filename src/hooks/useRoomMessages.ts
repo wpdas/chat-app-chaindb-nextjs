@@ -1,16 +1,16 @@
 import { useCallback, useEffect, useState } from "react";
-import { Room } from "@app/database/history-tables/Rooms";
-import { MessagesTable } from "@app/database/history-tables/Messages";
+import { Room } from "@app/database/tables/Rooms";
+import { Message } from "@app/database/tables/Messages";
 import io from "socket.io-client";
 import getRoomMessages from "@app/services/getRoomMessages";
 import { MessagePayload } from "@app/types";
 
 let socket: any;
-let messages_: MessagesTable[] = [];
+let messages_: Message[] = [];
 
 const useRoomMessages = (room: Room) => {
   const [ready, setReady] = useState(false);
-  const [messages, setMessages] = useState<MessagesTable[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
 
   const loadPreviousMessages = useCallback(async () => {
     setReady(false);

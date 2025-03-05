@@ -18,7 +18,7 @@ import Fuse from "fuse.js";
 
 import RoomItem from "./RoomItem";
 import useRoomsList from "../hooks/useRoomsList";
-import { Room } from "@app/database/history-tables/Rooms";
+import { Room } from "@app/database/tables/Rooms";
 
 type Props = {
   onSelectRoom: (room: Room) => void;

@@ -8,9 +8,10 @@ export type Message = {
   timestamp: number;
 };
 
-export class MessagesTable {
-  public username?: string;
-  public message?: string;
-  public b64Image?: string;
-  public timestamp?: number;
-}
+// Table
+export type MessagesSchema = {
+  username?: string;
+  message?: string;
+  b64Image?: string;
+  timestamp?: number;
+};

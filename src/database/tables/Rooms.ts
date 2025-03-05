@@ -1,4 +1,3 @@
-// Uses to store an array of rooms
 export type Room = {
   roomId: string;
   roomName: string;
@@ -6,6 +5,7 @@ export type Room = {
 
 export const defaultRoom: Room = { roomId: "lobby", roomName: "Lobby" };
 
-export class RoomsTable {
-  public rooms: Room[] = [defaultRoom];
-}
+// Table
+export type RoomsSchema = {
+  rooms: Room[];
+};

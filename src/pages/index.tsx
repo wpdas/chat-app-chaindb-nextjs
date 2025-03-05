@@ -12,7 +12,7 @@ import Content from "../components/Content";
 import NewRoomModal from "../components/NewRoomModal";
 import RecentRooms from "../components/RecentRooms";
 import ChatRoom from "../components/ChatRoom";
-import { Room, defaultRoom } from "@app/database/history-tables/Rooms";
+import { Room, defaultRoom } from "@app/database/tables/Rooms";
 import { useRouter } from "next/router";
 import useAuth from "@app/hooks/useAuth";
 import getRoomsList from "@app/services/getRoomsList";

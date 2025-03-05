@@ -1,5 +1,4 @@
 import { api } from "./api";
-import { BasicResponse, SignedUserAccount } from "chain-db-ts";
 
 export interface Props {
   username: string;
@@ -7,7 +6,7 @@ export interface Props {
 }
 
 const getUser = async (payload: Props) => {
-  const res = await api().post<BasicResponse<SignedUserAccount>>(
+  const res = await api().post<{ id: string; username: string }>(
     `${window.location.origin}/api/user/account`,
     payload
   );

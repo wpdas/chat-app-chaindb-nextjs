@@ -18,7 +18,8 @@
     "@types/react": "18.2.15",
     "@types/react-dom": "18.2.7",
     "axios": "^1.4.0",
-    "chain-db-ts": "^0.0.2",
+    "bcrypt": "^5.1.1",
+    "chain-db-ts": "^1.0.0-rc.1",
     "cors": "^2.8.5",
     "eslint": "8.45.0",
     "eslint-config-next": "13.4.12",
@@ -35,5 +36,8 @@
     "socket.io-client": "^4.7.2",
     "typescript": "5.1.6",
     "use-file-picker": "^1.7.0"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2"
   }
 }

@@ -64,12 +64,12 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   // Assinar
   const signup = useCallback(async (username: string, password: string) => {
     const res = await newUser({ username, password });
-    if (!res.success) {
-      return res.error_msg;
+    if (!res.id) {
+      return res.message || "User already exists";
     }
 
     // If succeed, save user info
-    localStorage.setItem("userId", res.data!.id);
+    localStorage.setItem("userId", res.id);
     localStorage.setItem("username", username);
     return "";
   }, []);
@@ -77,12 +77,13 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   // Entrar
   const signin = useCallback(async (username: string, password: string) => {
     const res = await getUser({ username, password });
-    if (!res.success) {
-      return res.error_msg;
+
+    if (!res.id) {
+      return "User not found";
     }
 
     // If succeed, save user info
-    localStorage.setItem("userId", res.data!.id);
+    localStorage.setItem("userId", res.id);
     localStorage.setItem("username", username);
     return "";
   }, []);
@@ -100,7 +101,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       return false;
     }
     const res = await getUserById({ userId });
-    return res.success;
+    return !!res.id;
   }, [userId]);
 
   return (

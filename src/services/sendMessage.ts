@@ -1,4 +1,4 @@
-import { Message } from "@app/database/history-tables/Messages";
+import { Message } from "@app/database/tables/Messages";
 import { api } from "./api";
 
 interface SendMessagePayload {

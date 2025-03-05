@@ -1,4 +1,4 @@
-import { database } from "@app/database";
+import { getUserIdsTable, getUserTable } from "@app/database";
 import { NextApiRequest, NextApiResponse } from "next";
 
 /**
@@ -14,9 +14,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const payload = req.query as { user_id: string };
 
-  // try creating user account
-  const response = await database.get_user_account_by_id(payload.user_id);
-  res.status(200).json(response);
+  const userIdsTable = await getUserIdsTable();
+  const [userTableInfo] = await userIdsTable.findWhere(
+    { id: payload.user_id },
+    1
+  );
+
+  if (!userTableInfo) {
+    return res.status(404).send("");
+  }
+
+  const userTable = await getUserTable(userTableInfo.username);
+
+  const { id, username } = userTable.table;
+  res.status(200).json({ id, username });
 };
 
 export default handler;

@@ -1,6 +1,6 @@
 import { messagesHistoryTable } from "@app/database";
 import { api } from "./api";
-import { MessagesTable } from "@app/database/history-tables/Messages";
+import { MessagesTable } from "@app/database/tables/Messages";
 
 export interface GetRoomDataPayload {
   roomId: string;

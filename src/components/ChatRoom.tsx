@@ -28,9 +28,9 @@ import MessageImage from "./MessageImage";
 import useAuth from "@app/hooks/useAuth";
 import {
   Message as MessageType,
-  MessagesTable,
-} from "@app/database/history-tables/Messages";
-import { Room, defaultRoom } from "@app/database/history-tables/Rooms";
+  // MessagesTable,
+} from "@app/database/tables/Messages";
+import { Room, defaultRoom } from "@app/database/tables/Rooms";
 
 type Props = {
   room: Room;
@@ -45,9 +45,9 @@ const ChatRoom: React.FC<Props> = ({
 }) => {
   const router = useRouter();
   // const [currentRoom, setCurrentRoom] = useState(room);
-  const [currentRoomMessages, setCurrentRoomMessages] = useState<
-    MessagesTable[]
-  >([]);
+  const [currentRoomMessages, setCurrentRoomMessages] = useState<MessageType[]>(
+    []
+  );
   const [pendingMessages, setPendingMessages] = useState<MessageType[]>([]);
   const [message, setMessage] = useState("");
   const { ready: isRoomsReady, roomsList } = useRoomsList();

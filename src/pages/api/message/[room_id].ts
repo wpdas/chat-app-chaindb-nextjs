@@ -1,4 +1,4 @@
-import { messagesHistoryTable, roomsHistoryTable } from "@app/database";
+import { getMessagesTable } from "@app/database";
 import { NextApiRequest, NextApiResponse } from "next";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -8,15 +8,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(404).send("");
   }
 
-  const messages = await messagesHistoryTable(roomId);
-  const historyMsg = await messages.getHistory(400);
+  const messagesTable = await getMessagesTable(roomId);
+  const historyMsg = await messagesTable.getHistory(400);
 
   // Newest messages first
-  const sortedMessages = historyMsg.sort(
-    (m1, m2) => m1.timestamp! - m2.timestamp!
-  );
+  // const sortedMessages = historyMsg.sort(
+  //   (m1, m2) => m1.timestamp! - m2.timestamp!
+  // );
 
-  res.status(200).json(sortedMessages);
+  res.status(200).json(historyMsg.reverse());
 };
 
 export default handler;

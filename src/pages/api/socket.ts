@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { Server } from "socket.io";
 import cors from "cors";
 import { MessagePayload } from "@app/types";
-import { database, messagesHistoryTable } from "@app/database";
+import { getUserIdsTable, getMessagesTable } from "@app/database";
 
 const corsMiddleware = cors();
 
@@ -24,20 +24,26 @@ const handler = async (req: NextApiRequest, res: NextApiResponse | any) => {
   io.on("connection", (socket) => {
     socket.on("new-message", async (payload: MessagePayload) => {
       // Check user
-      const checkUser = await database.get_user_account_by_id(payload.userId);
-      if (!checkUser.success) {
+      const userIdsTable = await getUserIdsTable();
+
+      const [userTableInfo] = await userIdsTable.findWhere(
+        { id: payload.userId },
+        1
+      );
+
+      if (!userTableInfo) {
         return;
       }
 
       // Store the new message to DB
-      const message = await messagesHistoryTable(payload.roomId);
-      message.table = {
+      const messagesTable = await getMessagesTable(payload.roomId);
+      messagesTable.table = {
         username: payload.message.username,
         message: payload.message.message,
         b64Image: payload.message.b64Image,
         timestamp: payload.message.timestamp,
       };
-      await message.persist();
+      await messagesTable.persist();
 
       // Send to others
       socket.broadcast.emit("emit-new-message", payload);

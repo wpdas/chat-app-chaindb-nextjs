@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { Server } from "socket.io";
 import cors from "cors";
 import { MessagePayload } from "@app/types";
-import { getUserIdsTable, getMessagesTable } from "@app/database";
+import { getMessagesTable, getUserTable } from "@app/database";
 
 const corsMiddleware = cors();
 
@@ -24,20 +24,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse | any) => {
   io.on("connection", (socket) => {
     socket.on("new-message", async (payload: MessagePayload) => {
       // Check user
-      const userIdsTable = await getUserIdsTable();
+      const userTable = await getUserTable();
+      const userInfo = await userTable.getDoc(payload.userId);
 
-      const [userTableInfo] = await userIdsTable.findWhere(
-        { id: payload.userId },
-        1
-      );
-
-      if (!userTableInfo) {
+      if (userInfo.isEmpty()) {
         return;
       }
 
       // Store the new message to DB
       const messagesTable = await getMessagesTable(payload.roomId);
-      messagesTable.table = {
+      messagesTable.currentDoc = {
         username: payload.message.username,
         message: payload.message.message,
         b64Image: payload.message.b64Image,

@@ -1,8 +1,7 @@
-import { ChainDB, connect, EventData, EventTypes } from "chain-db-ts";
+import { ChainDB, connect, EventTypes } from "chain-db-ts";
 import { RoomsSchema } from "./tables/Rooms";
 import { MessagesSchema } from "./tables/Messages";
 import { UserSchema } from "./tables/User";
-import { UserIdsSchema } from "./tables/UserIds";
 
 const dbServer = process.env.DB_HOST as string;
 const dbName = process.env.DB_NAME as string;
@@ -47,13 +46,8 @@ export const getMessagesTable = async (roomId: string) => {
 };
 
 // Users Table
-export const getUserTable = async (username: string) => {
+export const getUserTable = async () => {
   const database = await getDatabase();
-  return await database.getTable<UserSchema>(`user-${username}`);
-};
-
-// User Ids Table
-export const getUserIdsTable = async () => {
-  const database = await getDatabase();
-  return await database.getTable<UserIdsSchema>("user-ids");
+  // return await database.getTable<UserSchema>(`user-${username}`);
+  return await database.getTable<UserSchema>("user");
 };

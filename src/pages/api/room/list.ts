@@ -7,7 +7,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const roomsTable = await getRoomsTable();
-  res.status(200).json(roomsTable.table.rooms || []);
+  res.status(200).json(roomsTable.currentDoc.rooms || []);
 };
 
 export default handler;

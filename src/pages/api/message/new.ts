@@ -1,4 +1,4 @@
-import { getMessagesTable, getUserIdsTable } from "@app/database";
+import { getMessagesTable, getUserTable } from "@app/database";
 import { Message } from "@app/database/tables/Messages";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -13,18 +13,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     message: Message;
   };
 
-  // Check user
-  const userIdsTable = await getUserIdsTable();
-  const [userTableInfo] = await userIdsTable.findWhere(
-    { id: payload.userId },
-    1
-  );
-  if (!userTableInfo) {
+  const userTable = await getUserTable();
+
+  const userDoc = await userTable.getDoc(payload.userId);
+
+  if (userDoc.isEmpty()) {
     return res.status(404).send("");
   }
 
   const messageTable = await getMessagesTable(payload.roomId);
-  messageTable.table = {
+  messageTable.currentDoc = {
     username: payload.message.username,
     message: payload.message.message,
     b64Image: payload.message.b64Image,

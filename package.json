@@ -19,7 +19,7 @@
     "@types/react-dom": "18.2.7",
     "axios": "^1.4.0",
     "bcrypt": "^5.1.1",
-    "chain-db-ts": "^1.0.0-rc.1",
+    "chain-db-ts": "^1.0.0-rc.2",
     "cors": "^2.8.5",
     "eslint": "8.45.0",
     "eslint-config-next": "13.4.12",

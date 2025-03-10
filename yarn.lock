@@ -1598,10 +1598,10 @@ caniuse-lite@^1.0.30001406:
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001517.tgz#90fabae294215c3495807eb24fc809e11dc2f0a8"
   integrity sha512-Vdhm5S11DaFVLlyiKu4hiUTkpZu+y1KA/rZZqVQfOD5YdDT/eQKlkt7NaE0WGOFgX32diqt9MiP9CAiFeRklaA==
 
-chain-db-ts@^1.0.0-rc.1:
-  version "1.0.0-rc.1"
-  resolved "https://registry.yarnpkg.com/chain-db-ts/-/chain-db-ts-1.0.0-rc.1.tgz#6cf9c6e075e5a32b02381d04fc7f88309b7e0242"
-  integrity sha512-P7FjOS9+ADmeToVbeud7tOeh0FYZJk1fA7+9W6RcV2hVT6VTH1P/fvuNmLFvUwPo43368bOmrqnHx92V/+Ptcg==
+chain-db-ts@^1.0.0-rc.2:
+  version "1.0.0-rc.2"
+  resolved "https://registry.yarnpkg.com/chain-db-ts/-/chain-db-ts-1.0.0-rc.2.tgz#e0832572dae663038e60e06a418610bd03c67715"
+  integrity sha512-+oxG+7/pUJY7lbhjd2tz5KYiHs8Im52EoTpoWGj2XbwctLjYYw2TmuDXXAmKXw+P1/0co2A1VYcfrOvLALHYeA==
   dependencies:
     axios "^1.4.0"
     bufferutil "^4.0.9"

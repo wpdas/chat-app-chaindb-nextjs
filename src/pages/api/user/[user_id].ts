@@ -1,4 +1,4 @@
-import { getUserIdsTable, getUserTable } from "@app/database";
+import { getUserTable } from "@app/database";
 import { NextApiRequest, NextApiResponse } from "next";
 
 /**
@@ -14,20 +14,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const payload = req.query as { user_id: string };
 
-  const userIdsTable = await getUserIdsTable();
-  const [userTableInfo] = await userIdsTable.findWhere(
-    { id: payload.user_id },
-    1
-  );
+  const userTable = await getUserTable();
+  const userInfo = await userTable.getDoc(payload.user_id);
 
-  if (!userTableInfo) {
+  if (userInfo.isEmpty()) {
     return res.status(404).send("");
   }
 
-  const userTable = await getUserTable(userTableInfo.username);
+  // const userTable = await getUserTable(userTableInfo.username);
 
-  const { id, username } = userTable.table;
-  res.status(200).json({ id, username });
+  const { doc_id, username } = userInfo.doc;
+  res.status(200).json({ id: doc_id, username });
 };
 
 export default handler;

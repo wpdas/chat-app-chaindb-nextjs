@@ -38,6 +38,8 @@
     "use-file-picker": "^1.7.0"
   },
   "devDependencies": {
-    "@types/bcrypt": "^5.0.2"
+    "@types/bcrypt": "^5.0.2",
+    "dotenv": "^16.4.7",
+    "ts-node": "^10.9.2"
   }
 }

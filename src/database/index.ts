@@ -36,7 +36,7 @@ export const initSubscriptions = () => {
 // Rooms Table
 export const getRoomsTable = async () => {
   const database = await getDatabase();
-  return await database.getTable<RoomsSchema>("rooms");
+  return await database.getTable<RoomsSchema>("rooms_v2");
 };
 
 // Messages Table by RoomId

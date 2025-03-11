@@ -1,10 +1,9 @@
 const { connect } = require("chain-db-ts");
 
-// Active Migration Files
-const currentMigration = require("./create_new_rooms_table_110325207");
-
 // Actual Migrations
-const migrations = [currentMigration];
+const migrations = [
+  require("./create_new_rooms_table_110325207")
+];
 
 // Env to get the DB credentials
 const dotenv = require("dotenv");
